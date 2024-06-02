@@ -10,17 +10,40 @@ import { SelectValue } from "@radix-ui/react-select";
 const App = () => {
   const [questions, setQuestions] = React.useState([
     {
-      question: "How many bedrooms do you want?",
-      answers: ["1", "2", "3", "4", "5"],
+      question: "How many rooms would you like (bedrooms, hall, kitchen etc. combined)?",
+      answers: ['1', '2', '3', '4', '5', '6'],
     },
     {
-      question: "How many bathrooms do you want?",
-      answers: ["1", "2", "3", "4", "5"],
+      question: "What type of area do you want?",
+      answers: ['Super Area', 'Carpet Area', 'Built Area'],
     },
     {
-      question: "How many floors do you want?",
-      answers: ["1", "2", "3", "4", "5"],
+      question: "Which area locality do you wish to reside in?",
+      answers: [
+        'Bandel', 'Phool Bagan, Kankurgachi', 'Salt Lake City Sector 2',
+        'BN Reddy Nagar', 'Godavari Homes, Quthbullapur', 'Manikonda, Hyderabad'],
     },
+    {
+      question: "In which city would you like to reside in?",
+      answers: ['Kolkata', 'Mumbai', 'Bangalore', 'Delhi', 'Chennai', 'Hyderabad'],
+    },
+    {
+      question: "What should be the furnishing status of your desired house?",
+      answers: ['Furnished', 'Semi-Furnished', 'Unfurnished'],
+    },
+    {
+      question: "Are you moving as a family or as a bachelor?",
+      answers: ['Family', 'Bachelors'],
+    },
+    {
+      question: "How many bathrooms would you like in your house?",
+      answers: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+    },
+    {
+      question: "Who would you like to contact to when you need help?",
+      answers: ['Contact Owner', 'Contact Agent', 'Contact Builder'],
+    }
+    
   ]);
   const [currentQuestion, setCurrentQuestion] = React.useState(-1);
 
