@@ -62,6 +62,14 @@ const App = () => {
       question: "Who would you like to contact to when you need help?",
       answers: ["Contact Owner", "Contact Agent", "Contact Builder"],
     },
+    {
+      question: "How many floors do you want your apartment to be?",
+      number: true,
+    },
+    {
+      question: "Which floor would you like your apartment to be on?",
+      number: true,
+    },
   ]);
   const [currentQuestion, setCurrentQuestion] = React.useState(-1);
 
@@ -71,11 +79,35 @@ const App = () => {
   const [predictedRent, setPredictedRent] = React.useState(null);
 
   const predictRent = async () => {
-    // const res = await axios.post("", {})
-    // setPredictedRent(res.data.predictedRent);
     setLoading(true);
-    // setTimeout(() => {}, 5000);
-    // setLoading(false);
+    const size = parseInt(answers[0]) * 10.7639;
+    const rooms = parseInt(answers[1]);
+    const area = answers[2];
+    const locality = answers[3];
+    const city = answers[4];
+    const furnishing = answers[5];
+    const family = answers[6];
+    const bathrooms = parseInt(answers[7]);
+    const contact = answers[8];
+
+    const floor = `${
+      parseInt(answers[10]) == 0 ? "Ground" : answers[10]
+    } out of ${answers[9]}`;
+    const res = await axios.post("http://localhost:8000/predict-value", {
+      BHK: [rooms],
+      Size: [size],
+      Floor: [floor],
+      "Area Type": [area],
+      "Area Locality": [locality],
+      City: [city],
+      "Furnishing Status": [furnishing],
+      "Tenant Preferred": [family],
+      Bathroom: [bathrooms],
+      "Point of Contact": [contact],
+    });
+    setPredictedRent(res.data.prediction);
+    console.log(res.data.prediction);
+    setLoading(false);
   };
 
   React.useEffect(() => {
@@ -84,15 +116,36 @@ const App = () => {
   return (
     <div className="w-full h-screen bg-zinc-900 flex flex-col items-center justify-center gap-8">
       {loading && (
-        <div className="bg-gray-200 p-4 rounded-md">
+        <div className="bg-gray-200 p-4 rounded-md flex flex-col gap-2">
           <h1 className="text-gray-900 text-2xl font-bold">
             Predicting rent...
           </h1>
+          <button
+            className="text-zinc-900 bg-gray-200 px-4 py-2 rounded-md"
+            onClick={() => {
+              setCurrentQuestion(0);
+              setLoading(false);
+            }}
+          >
+            start
+          </button>
         </div>
       )}
       {predictedRent && (
-        <div className="bg-gray-200 p-4 rounded-md">
-          <h1 className="text-gray-900 text-2xl font-bold">Predicted rent: </h1>
+        <div className="bg-gray-200 p-4 rounded-md flex flex-col gap-2">
+          <h1 className="text-gray-900 text-2xl font-bold">
+            Predicted rent: {predictedRent}
+          </h1>
+          <button
+            className="text-zinc-900 bg-gray-200 px-4 py-2 rounded-md"
+            onClick={() => {
+              setCurrentQuestion(0);
+              setLoading(false);
+              setPredictedRent(null);
+            }}
+          >
+            start
+          </button>
         </div>
       )}
       {!predictedRent && !loading && (
